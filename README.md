@@ -1,6 +1,6 @@
 # Atomic State Redis Module
 
-This module provides additional redis commands to atomically set strings and hash fields if the field matches 
+This module provides additional redis commands to atomically set strings and hash fields if the field matches. Originally intended to facilitate state machine transitions.
 
 ## Set String If Equals
 
