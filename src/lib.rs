@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate redis_module;
 
-use redis_module::{Context, KeyType, RedisError, RedisResult, RedisString, RedisValue};
+use redis_module::{Context, KeyType, RedisError, RedisResult, RedisString, REDIS_OK};
 
 fn setif(context: &Context, args: Vec<RedisString>) -> RedisResult {
     if args.len() != 4 {
@@ -21,7 +21,7 @@ fn setif(context: &Context, args: Vec<RedisString>) -> RedisResult {
 
             if current_value == expected_value {
                 element.write(new_value.as_str())?;
-                Ok(RedisValue::SimpleString("OK".to_string()))
+                REDIS_OK
             } else {
                 let err = format!("Current value of \"{}\" is not \"{}\"", key, expected_value);
                 Err(RedisError::String(err))
@@ -55,7 +55,7 @@ fn hsetif(context: &Context, args: Vec<RedisString>) -> RedisResult {
 
             if current_value == expected_value {
                 element.hash_set(field.as_str(), new_value);
-                Ok(RedisValue::SimpleString("OK".to_string()))
+                REDIS_OK
             } else {
                 let err = format!("Current value of \"{}\" field \"{}\" is not \"{}\"", key, field, expected_value);
                 Err(RedisError::String(err))
@@ -66,7 +66,7 @@ fn hsetif(context: &Context, args: Vec<RedisString>) -> RedisResult {
 }
 
 redis_module! {
-    name: "atomic-state",
+    name: "setif",
     version: 1,
     data_types: [],
     commands: [

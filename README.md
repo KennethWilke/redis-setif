@@ -1,4 +1,4 @@
-# Atomic State Redis Module
+# SETIF Redis Module
 
 This module provides additional redis commands to atomically set strings and hash fields if the field matches. Originally intended to facilitate state machine transitions.
 
@@ -21,7 +21,6 @@ OK
 (error) Current value of "example-string" is not "old"
 > SETIF example-string new newer
 OK
-
 ```
 
 ## Set Hash Field If Equals
@@ -39,12 +38,11 @@ Examples:
 (error) Current value of "example-hash" field "field" is not "old"
 > HSETIF example-hash field value new
 OK
-
 ```
 
 # Building and Running
 
 ```
 cargo build --release
-redis-server --loadmodule ./target/release/libatomicstate.so
+redis-server --loadmodule ./target/release/libsetif.so
 ```

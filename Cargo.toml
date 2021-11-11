@@ -1,5 +1,5 @@
 [package]
-name = "atomic-state"
+name = "redis-setif"
 version = "0.1.0"
 authors = ["Kenneth Wilke <kenneth.wilke@gmail.com>"]
 edition = "2018"
@@ -10,5 +10,5 @@ edition = "2018"
 "redis-module" = "*"
 
 [lib]
-name = "atomicstate"
+name = "setif"
 crate-type = ["dylib"]
