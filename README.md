@@ -1,49 +1,45 @@
 # Atomic State Redis Module
 
-This module was designed to facilitate the use of redis strings and hashes for stateful data.
+This module provides additional redis commands to atomically set strings and hash fields if the field matches 
 
-## Set String State
+## Set String If Equals
 
 Changes the value of a string key only if the string matches the expected current value
 
-`state <string_key> <expected_current_value> <new_value>`
+`SETIF <string_key> <expected> <new>`
 
 Examples:
 
 ```
-127.0.0.1:6379> keys *
-(empty array)
-127.0.0.1:6379> state test-key "" new
+> SETIF example-string old new
 (error) WRONGTYPE Operation against a key holding the wrong kind of value
-127.0.0.1:6379> set test-key new
+> SET example-string old
 OK
-127.0.0.1:6379> state test-key new edited
+> SETIF example-string old new
 OK
-127.0.0.1:6379> state test-key new edited
-(error) Current state for test-key is not new
-127.0.0.1:6379> state test-key edited edited-again
+> SETIF example-string old new
+(error) Current value of "example-string" is not "old"
+> SETIF example-string new newer
 OK
+
 ```
 
-## Set Hash Field State
+## Set Hash Field If Equals
 
 Similar to the Set String State, this format sets a hash field value.
 
-`state <hash_key> <hash_field> <expected_current_value> <new_value>`
+`HSETIF <hash_key> <hash_field> <expected> <new>`
 
 Examples:
 
 ```
-127.0.0.1:6379> keys *
-(empty array)
-127.0.0.1:6379> hset test-key test-field new
+> HSET example-hash field value
 (integer) 1
-127.0.0.1:6379> state test-key test-field old new
-(error) Current state for test-key is not old
-127.0.0.1:6379> state test-key test-field new edited
+> HSETIF example-hash field old new
+(error) Current value of "example-hash" field "field" is not "old"
+> HSETIF example-hash field value new
 OK
-127.0.0.1:6379> state test-key test-field new edited
-(error) Current state for test-key is not new
+
 ```
 
 # Building and Running
